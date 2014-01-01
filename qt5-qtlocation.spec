@@ -16,6 +16,8 @@ BuildRequires:	gypsy-devel
 BuildRequires:	qt5-qtbase-devel = %{version}
 BuildRequires:	qt5-qttools-devel = %{version}
 BuildRequires:	rpmbuild(macros) >= 1.654
+BuildRequires:	tar >= 1:1.22
+BuildRequires:	xz
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
@@ -38,6 +40,9 @@ Qt5 Location - development files.
 %package doc
 Summary:	The Qt5 Location - docs
 Group:		Documentation
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description doc
 Qt5 Location - documentation.
@@ -45,6 +50,9 @@ Qt5 Location - documentation.
 %package examples
 Summary:	Qt5 Location examples
 Group:		X11/Development/Libraries
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description examples
 Qt5 Location - examples.
