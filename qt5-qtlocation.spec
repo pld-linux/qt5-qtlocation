@@ -66,10 +66,12 @@ Requires:	Qt5Quick >= %{qtdeclarative_ver}
 Obsoletes:	qt5-qtlocation
 
 %description -n Qt5Positioning
-Qt5 Positioning library (TODO: ...).
+Qt5 Positioning library provides positioning information via QML and
+C++ interfaces.
 
 %description -n Qt5Positioning -l pl.UTF_8
-Biblioteka Qt5 Positioning (TODO: ...)
+Biblioteka Qt5 Positioning udostępnia informacje o położeniu poprzez
+interfejsy QML i C++.
 
 %package -n Qt5Positioning-devel
 Summary:	Qt5 Positioning library - development files
