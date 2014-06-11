@@ -1,26 +1,32 @@
-# TODO:
-# - cleanup
+# maybe TODO:
+# Qt5Location (BR: Qt3d)
+# plugins/position/simulator (BR: Qt5Simulator)
 #
 # Conditional build:
 %bcond_without	qch	# documentation in QCH format
 
 %define		qtbase_ver		%{version}
+%define		qtdeclarative_ver	%{version}
 %define		qttools_ver		%{version}
 %define		orgname		qtlocation
 Summary:	The Qt5 Location library
 Summary(pl.UTF-8):	Biblioteka Qt5 Location
 Name:		qt5-%{orgname}
-Version:	5.2.0
-Release:	0.1
-License:	LGPL v2.1 or GPL v3.0
+Version:	5.3.0
+Release:	1
+License:	LGPL v2.1 with Digia Qt LGPL Exception v1.1 or GPL v3.0
 Group:		Libraries
-Source0:	http://download.qt-project.org/official_releases/qt/5.2/%{version}/submodules/%{orgname}-opensource-src-%{version}.tar.xz
-# Source0-md5:	1c05c198cc3e43da4692f9dfb43b45d6
+Source0:	http://download.qt-project.org/official_releases/qt/5.3/%{version}/submodules/%{orgname}-opensource-src-%{version}.tar.xz
+# Source0-md5:	bfc7678bfe7d78f12fb20a54ac54e610
 URL:		http://qt-project.org/
+BuildRequires:	GConf2-devel >= 2.0
+BuildRequires:	Qt5Core-devel >= %{qtbase_ver}
+BuildRequires:	Qt5Network-devel >= %{qtbase_ver}
+BuildRequires:	Qt5Qml-devel >= %{qtdeclarative_ver}
+BuildRequires:	Qt5Quick-devel >= %{qtdeclarative_ver}
 BuildRequires:	geoclue-devel
 BuildRequires:	gypsy-devel
-BuildRequires:	qt5-qtbase-devel >= %{qtbase_ver}
-BuildRequires:	qt5-qttools-devel >= %{qttools_ver}
+BuildRequires:	pkgconfig
 %if %{with qch}
 BuildRequires:	qt5-assistant >= %{qttools_ver}
 %endif
@@ -54,6 +60,9 @@ Summary:	The Qt5 Positioning library
 Summary(pl.UTF-8):	Biblioteka Qt5 Positioning
 Group:		Libraries
 Requires:	Qt5Core >= %{qtbase_ver}
+Requires:	Qt5Network >= %{qtbase_ver}
+Requires:	Qt5Qml >= %{qtdeclarative_ver}
+Requires:	Qt5Quick >= %{qtdeclarative_ver}
 Obsoletes:	qt5-qtlocation
 
 %description -n Qt5Positioning
@@ -66,6 +75,7 @@ Biblioteka Qt5 Positioning (TODO: ...)
 Summary:	Qt5 Positioning library - development files
 Summary(pl.UTF-8):	Biblioteka Qt5 Positioning - pliki programistyczne
 Group:		Development/Libraries
+Requires:	Qt5Core-devel >= %{qtbase_ver}
 Requires:	Qt5Positioning = %{version}-%{release}
 Obsoletes:	qt5-qtlocation-devel
 
@@ -144,10 +154,7 @@ rm -rf $RPM_BUILD_ROOT
 
 # Prepare some files list
 ifecho() {
-	RESULT=`echo $RPM_BUILD_ROOT$2 2>/dev/null`
-	[ "$RESULT" == "" ] && return # XXX this is never true due $RPM_BUILD_ROOT being set
-	r=`echo $RESULT | awk '{ print $1 }'`
-
+	r="$RPM_BUILD_ROOT$2"
 	if [ -d "$r" ]; then
 		echo "%%dir $2" >> $1.files
 	elif [ -x "$r" ] ; then
@@ -160,12 +167,16 @@ ifecho() {
 		return 1
 	fi
 }
+ifecho_tree() {
+	ifecho $1 $2
+	for f in `find $RPM_BUILD_ROOT$2 -printf "%%P "`; do
+		ifecho $1 $2/$f
+	done
+}
 
 echo "%defattr(644,root,root,755)" > examples.files
-ifecho examples %{_examplesdir}/qt5
-for f in `find $RPM_BUILD_ROOT%{_examplesdir}/qt5 -printf "%%P "`; do
-	ifecho examples %{_examplesdir}/qt5/$f
-done
+ifecho_tree examples %{_examplesdir}/qt5/qtpositioning
+ifecho_tree examples %{_examplesdir}/qt5/positioning
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -173,21 +184,27 @@ rm -rf $RPM_BUILD_ROOT
 %post	-n Qt5Positioning -p /sbin/ldconfig
 %postun	-n Qt5Positioning -p /sbin/ldconfig
 
-%files
+%files -n Qt5Positioning
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libQt5Positioning.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libQt5Positioning.so.5
-%attr(755,root,root) %{qt5dir}/plugins/*
-%{qt5dir}/qml/*
+%dir %{qt5dir}/plugins/position
+%attr(755,root,root) %{qt5dir}/plugins/position/libqtposition_geoclue.so
+%attr(755,root,root) %{qt5dir}/plugins/position/libqtposition_gypsy.so
+%attr(755,root,root) %{qt5dir}/plugins/position/libqtposition_positionpoll.so
+%attr(755,root,root) %{qt5dir}/qml/QtPositioning/libdeclarative_positioning.so
+%{qt5dir}/qml/QtPositioning/plugins.qmltypes
+%{qt5dir}/qml/QtPositioning/qmldir
 
-%files devel
+%files -n Qt5Positioning-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libQt5Positioning.so
 %{_libdir}/libQt5Positioning.prl
 %{_includedir}/qt5/QtPositioning
 %{_pkgconfigdir}/Qt5Positioning.pc
 %{_libdir}/cmake/Qt5Positioning
-%{qt5dir}/mkspecs/modules/*.pri
+%{qt5dir}/mkspecs/modules/qt_lib_positioning.pri
+%{qt5dir}/mkspecs/modules/qt_lib_positioning_private.pri
 
 %files doc
 %defattr(644,root,root,755)
@@ -200,3 +217,6 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %files examples -f examples.files
+%defattr(644,root,root,755)
+# XXX: dir shared with qt5-qtbase-examples
+%dir %{_examplesdir}/qt5
