@@ -194,6 +194,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{qt5dir}/plugins/position/libqtposition_geoclue.so
 %attr(755,root,root) %{qt5dir}/plugins/position/libqtposition_gypsy.so
 %attr(755,root,root) %{qt5dir}/plugins/position/libqtposition_positionpoll.so
+%dir %{qt5dir}/qml/QtPositioning
 %attr(755,root,root) %{qt5dir}/qml/QtPositioning/libdeclarative_positioning.so
 %{qt5dir}/qml/QtPositioning/plugins.qmltypes
 %{qt5dir}/qml/QtPositioning/qmldir
