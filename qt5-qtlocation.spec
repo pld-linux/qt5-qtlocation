@@ -69,7 +69,7 @@ Obsoletes:	qt5-qtlocation
 Qt5 Positioning library provides positioning information via QML and
 C++ interfaces.
 
-%description -n Qt5Positioning -l pl.UTF_8
+%description -n Qt5Positioning -l pl.UTF-8
 Biblioteka Qt5 Positioning udostępnia informacje o położeniu poprzez
 interfejsy QML i C++.
 
