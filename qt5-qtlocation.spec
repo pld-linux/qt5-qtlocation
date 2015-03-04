@@ -59,11 +59,44 @@ systemach biurkowych, przenośnych i wbudowanych bez przepisywania kodu
 
 Ten pakiet zawiera biblioteki Qt5 Location (Qt5Positioning).
 
+%package -n Qt5Location
+Summary:	The Qt5 Location library
+Summary(pl.UTF-8):	Biblioteka Qt5 Location
+Group:		Libraries
+Requires:	Qt5Core >= %{qtbase_ver}
+Requires:	Qt5Network >= %{qtbase_ver}
+Requires:	Qt5Qml >= %{qtdeclarative_ver}
+Requires:	Qt5Quick >= %{qtdeclarative_ver}
+Obsoletes:	qt5-qtlocation
+
+%description -n Qt5Location
+Qt5 Location library provides location information via QML and
+C++ interfaces.
+
+%description -n Qt5Location -l pl.UTF-8
+Biblioteka Qt5 Location udostępnia informacje o lokalizacji poprzez
+interfejsy QML i C++.
+
+%package -n Qt5Location-devel
+Summary:	Qt5 Location library - development files
+Summary(pl.UTF-8):	Biblioteka Qt5 Location - pliki programistyczne
+Group:		Development/Libraries
+Requires:	Qt5Core-devel >= %{qtbase_ver}
+Requires:	Qt5Positioning = %{version}-%{release}
+Obsoletes:	qt5-qtlocation-devel
+
+%description -n Qt5Location-devel
+Qt5 Location library - development files.
+
+%description -n Qt5Location-devel -l pl.UTF-8
+Biblioteka Qt5 Location - pliki programistyczne.
+
 %package -n Qt5Positioning
 Summary:	The Qt5 Positioning library
 Summary(pl.UTF-8):	Biblioteka Qt5 Positioning
 Group:		Libraries
 Requires:	Qt5Core >= %{qtbase_ver}
+Requires:	Qt5Location >= %{qtbase_ver}
 Requires:	Qt5Network >= %{qtbase_ver}
 Requires:	Qt5Qml >= %{qtdeclarative_ver}
 Requires:	Qt5Quick >= %{qtdeclarative_ver}
@@ -82,6 +115,7 @@ Summary:	Qt5 Positioning library - development files
 Summary(pl.UTF-8):	Biblioteka Qt5 Positioning - pliki programistyczne
 Group:		Development/Libraries
 Requires:	Qt5Core-devel >= %{qtbase_ver}
+Requires:	Qt5Qt5Location-devel >= %{qtbase_ver}
 Requires:	Qt5Positioning = %{version}-%{release}
 Obsoletes:	qt5-qtlocation-devel
 
@@ -195,8 +229,9 @@ ifecho_tree() {
 }
 
 echo "%defattr(644,root,root,755)" > examples.files
-ifecho_tree examples %{_examplesdir}/qt5/qtpositioning
+ifecho_tree examples %{_examplesdir}/qt5/location
 ifecho_tree examples %{_examplesdir}/qt5/positioning
+ifecho_tree examples %{_examplesdir}/qt5/qtpositioning
 
 # find_lang --with-qm supports only PLD qt3/qt4 specific %{_datadir}/locale/*/LC_MESSAGES layout
 find_qt5_qm()
@@ -215,10 +250,35 @@ find_qt5_qm qtlocation >> qtlocation.lang
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post	-n Qt5Location -p /sbin/ldconfig
+%postun	-n Qt5Location -p /sbin/ldconfig
+
 %post	-n Qt5Positioning -p /sbin/ldconfig
 %postun	-n Qt5Positioning -p /sbin/ldconfig
 
-%files -n Qt5Positioning -f qtlocation.lang
+%files -n Qt5Location -f qtlocation.lang
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libQt5Location.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libQt5Location.so.5
+%dir %{qt5dir}/plugins/geoservices
+%attr(755,root,root) %{qt5dir}/plugins/geoservices/libqtgeoservices_nokia.so
+%attr(755,root,root) %{qt5dir}/plugins/geoservices/libqtgeoservices_osm.so
+%dir %{qt5dir}/qml/QtLocation
+%attr(755,root,root) %{qt5dir}/qml/QtLocation/libdeclarative_location.so
+%{qt5dir}/qml/QtLocation/plugins.qmltypes
+%{qt5dir}/qml/QtLocation/qmldir
+
+%files -n Qt5Location-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libQt5Location.so
+%{_libdir}/libQt5Location.prl
+%{_includedir}/qt5/QtLocation
+%{_pkgconfigdir}/Qt5Location.pc
+%{_libdir}/cmake/Qt5Location
+%{qt5dir}/mkspecs/modules/qt_lib_location.pri
+%{qt5dir}/mkspecs/modules/qt_lib_location_private.pri
+
+%files -n Qt5Positioning
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libQt5Positioning.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libQt5Positioning.so.5
@@ -243,11 +303,13 @@ rm -rf $RPM_BUILD_ROOT
 
 %files doc
 %defattr(644,root,root,755)
+%{_docdir}/qt5-doc/qtlocation
 %{_docdir}/qt5-doc/qtpositioning
 
 %if %{with qch}
 %files doc-qch
 %defattr(644,root,root,755)
+%{_docdir}/qt5-doc/qtlocation.qch
 %{_docdir}/qt5-doc/qtpositioning.qch
 %endif
 
