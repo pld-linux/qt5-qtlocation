@@ -14,7 +14,7 @@ Summary:	The Qt5 Location library
 Summary(pl.UTF-8):	Biblioteka Qt5 Location
 Name:		qt5-%{orgname}
 Version:	5.4.1
-Release:	1
+Release:	2
 License:	LGPL v2.1 with Digia Qt LGPL Exception v1.1 or GPL v3.0
 Group:		Libraries
 Source0:	http://download.qt-project.org/official_releases/qt/5.4/%{version}/submodules/%{orgname}-opensource-src-%{version}.tar.xz
@@ -115,7 +115,7 @@ Summary:	Qt5 Positioning library - development files
 Summary(pl.UTF-8):	Biblioteka Qt5 Positioning - pliki programistyczne
 Group:		Development/Libraries
 Requires:	Qt5Core-devel >= %{qtbase_ver}
-Requires:	Qt5Qt5Location-devel >= %{qtbase_ver}
+Requires:	Qt5Location-devel >= %{qtbase_ver}
 Requires:	Qt5Positioning = %{version}-%{release}
 Obsoletes:	qt5-qtlocation-devel
 
