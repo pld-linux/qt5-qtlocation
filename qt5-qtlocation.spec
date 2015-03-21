@@ -1,5 +1,4 @@
 # maybe TODO:
-# Qt5Location (BR: Qt3d)
 # plugins/position/simulator (BR: Qt5Simulator)
 #
 # Conditional build:
@@ -49,7 +48,7 @@ Qt is a cross-platform application and UI framework. Using Qt, you can
 write web-enabled applications once and deploy them across desktop,
 mobile and embedded systems without rewriting the source code.
 
-This package contains Qt5 Location (Qt5Positioning) library.
+This package contains Qt5 Location and Positioning libraries.
 
 %description -l pl.UTF-8
 Qt to wieloplatformowy szkielet aplikacji i interfejsów użytkownika.
@@ -57,32 +56,35 @@ Przy użyciu Qt można pisać aplikacje powiązane z WWW i wdrażać je w
 systemach biurkowych, przenośnych i wbudowanych bez przepisywania kodu
 źródłowego.
 
-Ten pakiet zawiera biblioteki Qt5 Location (Qt5Positioning).
+Ten pakiet zawiera biblioteki Qt5 Location i Positioning.
 
 %package -n Qt5Location
 Summary:	The Qt5 Location library
 Summary(pl.UTF-8):	Biblioteka Qt5 Location
 Group:		Libraries
 Requires:	Qt5Core >= %{qtbase_ver}
-Requires:	Qt5Network >= %{qtbase_ver}
-Requires:	Qt5Qml >= %{qtdeclarative_ver}
+Requires:	Qt5Positioning = %{version}-%{release}
+Requires:	Qt5Gui >= %{qtbase_ver}
 Requires:	Qt5Quick >= %{qtdeclarative_ver}
 Obsoletes:	qt5-qtlocation
 
 %description -n Qt5Location
-Qt5 Location library provides location information via QML and
-C++ interfaces.
+Qt5 Location library provides mapping, navigation and place search via
+QML and C++ interfaces.
 
 %description -n Qt5Location -l pl.UTF-8
-Biblioteka Qt5 Location udostępnia informacje o lokalizacji poprzez
-interfejsy QML i C++.
+Biblioteka Qt5 Location udostępnia mapy, nawigowanie oraz wyszukiwanie
+miejsc poprzez interfejsy QML i C++.
 
 %package -n Qt5Location-devel
 Summary:	Qt5 Location library - development files
 Summary(pl.UTF-8):	Biblioteka Qt5 Location - pliki programistyczne
 Group:		Development/Libraries
 Requires:	Qt5Core-devel >= %{qtbase_ver}
-Requires:	Qt5Positioning = %{version}-%{release}
+Requires:	Qt5Gui-devel >= %{qtbase_ver}
+Requires:	Qt5Location = %{version}-%{release}
+Requires:	Qt5Positioning-devel = %{version}-%{release}
+Requires:	Qt5Quick-devel >= %{qtdeclarative_ver}
 Obsoletes:	qt5-qtlocation-devel
 
 %description -n Qt5Location-devel
@@ -96,7 +98,7 @@ Summary:	The Qt5 Positioning library
 Summary(pl.UTF-8):	Biblioteka Qt5 Positioning
 Group:		Libraries
 Requires:	Qt5Core >= %{qtbase_ver}
-Requires:	Qt5Location >= %{qtbase_ver}
+# for plugins
 Requires:	Qt5Network >= %{qtbase_ver}
 Requires:	Qt5Qml >= %{qtdeclarative_ver}
 Requires:	Qt5Quick >= %{qtdeclarative_ver}
@@ -115,7 +117,6 @@ Summary:	Qt5 Positioning library - development files
 Summary(pl.UTF-8):	Biblioteka Qt5 Positioning - pliki programistyczne
 Group:		Development/Libraries
 Requires:	Qt5Core-devel >= %{qtbase_ver}
-Requires:	Qt5Location-devel >= %{qtbase_ver}
 Requires:	Qt5Positioning = %{version}-%{release}
 Obsoletes:	qt5-qtlocation-devel
 
@@ -126,8 +127,8 @@ Qt5 Positioning library - development files.
 Biblioteka Qt5 Positioning - pliki programistyczne.
 
 %package doc
-Summary:	Qt5 Location (Qt5Positioning) documentation in HTML format
-Summary(pl.UTF-8):	Dokumentacja do biblioteki Qt5 Location (Qt5Positioning) w formacie HTML
+Summary:	Qt5 Location and Positioning documentation in HTML format
+Summary(pl.UTF-8):	Dokumentacja do bibliotek Qt5 Location i Positioning w formacie HTML
 Group:		Documentation
 Requires:	qt5-doc-common >= %{qtbase_ver}
 %if "%{_rpmversion}" >= "5"
@@ -135,15 +136,14 @@ BuildArch:	noarch
 %endif
 
 %description doc
-Qt5 Location (Qt5Positioning) documentation in HTML format.
+Qt5 Location and Positioning documentation in HTML format.
 
 %description doc -l pl.UTF-8
-Dokumentacja do biblioteki Qt5 Location (Qt5Positioning) w formacie
-HTML.
+Dokumentacja do bibliotek Qt5 Location i Positioning w formacie HTML.
 
 %package doc-qch
-Summary:	Qt5 Location (Qt5Positioning) documentation in QCH format
-Summary(pl.UTF-8):	Dokumentacja do biblioteki Qt5 Location (Qt5Positioning) w formacie QCH
+Summary:	Qt5 Location and Positioning documentation in QCH format
+Summary(pl.UTF-8):	Dokumentacja do bibliotek Qt5 Location i Positioning w formacie QCH
 Group:		Documentation
 Requires:	qt5-doc-common >= %{qtbase_ver}
 %if "%{_rpmversion}" >= "5"
@@ -151,25 +151,24 @@ BuildArch:	noarch
 %endif
 
 %description doc-qch
-Qt5 Location (Qt5Positioning) documentation in QCH format.
+Qt5 Location and Positioning documentation in QCH format.
 
 %description doc-qch -l pl.UTF-8
-Dokumentacja do biblioteki Qt5 Location (Qt5Positioning) w formacie
-QCH.
+Dokumentacja do bibliotek Qt5 Location i Positioning w formacie QCH.
 
 %package examples
-Summary:	Qt5 Location (Qt5Positioning) examples
-Summary(pl.UTF-8):	Przykłady do biblioteki Qt5 Location (Qt5Positioning)
+Summary:	Qt5 Location and Positioning examples
+Summary(pl.UTF-8):	Przykłady do bibliotek Qt5 Location i Positioning
 Group:		X11/Development/Libraries
 %if "%{_rpmversion}" >= "5"
 BuildArch:	noarch
 %endif
 
 %description examples
-Qt5 Location (Qt5Positioning) examples.
+Qt5 Location and Positioning examples.
 
 %description examples -l pl.UTF-8
-Przykłady do biblioteki Qt5 Location (Qt5Positioning).
+Przykłady do bibliotek Qt5 Location i Positioning.
 
 %prep
 %setup -q -n %{orgname}-opensource-src-%{version} %{?with_qm:-a1}
@@ -198,8 +197,13 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} -C qttranslations-opensource-src-%{version} install \
 	INSTALL_ROOT=$RPM_BUILD_ROOT
 # keep only qtlocation
-%{__rm} $RPM_BUILD_ROOT%{_datadir}/qt5/translations/{assistant,designer,linguist,qmlviewer,qt,qtbase,qtconfig,qtconnectivity,qtdeclarative,qtmultimedia,qtquick1,qtscript,qtxmlpatterns}_*.qm
+%{__rm} $RPM_BUILD_ROOT%{_datadir}/qt5/translations/{assistant,designer,linguist,qmlviewer,qt,qtbase,qtconfig,qtconnectivity,qtdeclarative,qtmultimedia,qtquick1,qtquickcontrols,qtscript,qtxmlpatterns}_*.qm
 %endif
+
+# kill unnecessary -L%{_libdir} from *.la, *.prl, *.pc
+%{__sed} -i -e "s,-L%{_libdir} \?,,g" \
+	$RPM_BUILD_ROOT%{_libdir}/*.{la,prl} \
+	$RPM_BUILD_ROOT%{_pkgconfigdir}/*.pc
 
 # useless symlinks
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/libQt5*.so.5.?
