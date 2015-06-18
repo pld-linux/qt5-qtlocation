@@ -14,7 +14,7 @@
 
 %define		qtbase_ver		%{version}
 %define		qtdeclarative_ver	%{version}
-%define		qttools_ver		%{version}
+%define		qttools_ver		5.4
 %define		orgname		qtlocation
 Summary:	The Qt5 Location library
 Summary(pl.UTF-8):	Biblioteka Qt5 Location
