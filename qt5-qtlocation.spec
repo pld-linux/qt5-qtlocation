@@ -14,21 +14,22 @@
 
 %define		qtbase_ver		%{version}
 %define		qtdeclarative_ver	%{version}
-%define		qttools_ver		5.4
+%define		qttools_ver		5.8
 %define		orgname		qtlocation
 Summary:	The Qt5 Location library
 Summary(pl.UTF-8):	Biblioteka Qt5 Location
 Name:		qt5-%{orgname}
-Version:	5.5.1
-Release:	1
+Version:	5.8.0
+Release:	0.1
 License:	LGPL v2.1 with Digia Qt LGPL Exception v1.1 or GPL v3.0
 Group:		Libraries
-Source0:	http://download.qt.io/official_releases/qt/5.5/%{version}/submodules/%{orgname}-opensource-src-%{version}.tar.xz
-# Source0-md5:	9e0c0ad76f520ba89da730b8ff601cc2
-Source1:	http://download.qt.io/official_releases/qt/5.5/%{version}/submodules/qttranslations-opensource-src-%{version}.tar.xz
-# Source1-md5:	1f89d53fe759db123b4b6d9de9d9e8c9
+Source0:	http://download.qt.io/official_releases/qt/5.8/%{version}/submodules/%{orgname}-opensource-src-%{version}.tar.xz
+# Source0-md5:	2077d5d6f926087614c9e94021019c0e
+Source1:	http://download.qt.io/official_releases/qt/5.8/%{version}/submodules/qttranslations-opensource-src-%{version}.tar.xz
+# Source1-md5:	b6c6748a923b9639c7d018cfdb04caf4
 URL:		http://www.qt.io/
 BuildRequires:	GConf2-devel >= 2.0
+BuildRequires:	Qt5Concurrent-devel >= %{qtbase_ver}
 BuildRequires:	Qt5Core-devel >= %{qtbase_ver}
 BuildRequires:	Qt5Network-devel >= %{qtbase_ver}
 BuildRequires:	Qt5Qml-devel >= %{qtdeclarative_ver}
@@ -242,7 +243,6 @@ ifecho_tree() {
 echo "%defattr(644,root,root,755)" > examples.files
 ifecho_tree examples %{_examplesdir}/qt5/location
 ifecho_tree examples %{_examplesdir}/qt5/positioning
-ifecho_tree examples %{_examplesdir}/qt5/qtpositioning
 
 # find_lang --with-qm supports only PLD qt3/qt4 specific %{_datadir}/locale/*/LC_MESSAGES layout
 find_qt5_qm()
@@ -272,6 +272,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libQt5Location.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libQt5Location.so.5
 %dir %{qt5dir}/plugins/geoservices
+%attr(755,root,root) %{qt5dir}/plugins/geoservices/libqtgeoservices_esri.so
 %attr(755,root,root) %{qt5dir}/plugins/geoservices/libqtgeoservices_mapbox.so
 %attr(755,root,root) %{qt5dir}/plugins/geoservices/libqtgeoservices_nokia.so
 %attr(755,root,root) %{qt5dir}/plugins/geoservices/libqtgeoservices_osm.so
