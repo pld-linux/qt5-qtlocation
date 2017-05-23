@@ -4,11 +4,11 @@
 # Conditional build:
 %bcond_with	bootstrap	# disable features to able to build without installed qt5
 # -- build targets
-%bcond_without	qch	# documentation in QCH format
+%bcond_without	doc	# Documentation
 %bcond_without	qm	# QM translations
 
 %if %{with bootstrap}
-%undefine	with_qch
+%undefine	with_doc
 %undefine	with_qm
 %endif
 
@@ -37,7 +37,7 @@ BuildRequires:	Qt5Quick-devel >= %{qtdeclarative_ver}
 BuildRequires:	geoclue-devel
 BuildRequires:	gypsy-devel
 BuildRequires:	pkgconfig
-%if %{with qch}
+%if %{with doc}
 BuildRequires:	qt5-assistant >= %{qttools_ver}
 %endif
 BuildRequires:	qt5-build >= %{qtbase_ver}
@@ -184,7 +184,7 @@ Przykłady do bibliotek Qt5 Location i Positioning.
 %build
 qmake-qt5
 %{__make}
-%{__make} %{!?with_qch:html_}docs
+%{?with_doc:%{__make} docs}
 
 %if %{with qm}
 cd qttranslations-opensource-src-%{version}
@@ -198,8 +198,10 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	INSTALL_ROOT=$RPM_BUILD_ROOT
 
-%{__make} install_%{!?with_qch:html_}docs \
+%if %{with doc}
+%{__make} install_docs \
 	INSTALL_ROOT=$RPM_BUILD_ROOT
+%endif
 
 %if %{with qm}
 %{__make} -C qttranslations-opensource-src-%{version} install \
@@ -314,12 +316,12 @@ rm -rf $RPM_BUILD_ROOT
 %{qt5dir}/mkspecs/modules/qt_lib_positioning.pri
 %{qt5dir}/mkspecs/modules/qt_lib_positioning_private.pri
 
+%if %{with doc}
 %files doc
 %defattr(644,root,root,755)
 %{_docdir}/qt5-doc/qtlocation
 %{_docdir}/qt5-doc/qtpositioning
 
-%if %{with qch}
 %files doc-qch
 %defattr(644,root,root,755)
 %{_docdir}/qt5-doc/qtlocation.qch
