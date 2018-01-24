@@ -34,7 +34,6 @@ BuildRequires:	Qt5Core-devel >= %{qtbase_ver}
 BuildRequires:	Qt5Network-devel >= %{qtbase_ver}
 BuildRequires:	Qt5Qml-devel >= %{qtdeclarative_ver}
 BuildRequires:	Qt5Quick-devel >= %{qtdeclarative_ver}
-BuildRequires:	geoclue-devel
 BuildRequires:	gypsy-devel
 BuildRequires:	pkgconfig
 %if %{with doc}
