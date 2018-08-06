@@ -19,14 +19,14 @@
 Summary:	The Qt5 Location library
 Summary(pl.UTF-8):	Biblioteka Qt5 Location
 Name:		qt5-%{orgname}
-Version:	5.8.0
+Version:	5.11.1
 Release:	1
 License:	LGPL v2.1 with Digia Qt LGPL Exception v1.1 or GPL v3.0
 Group:		Libraries
-Source0:	http://download.qt.io/official_releases/qt/5.8/%{version}/submodules/%{orgname}-opensource-src-%{version}.tar.xz
-# Source0-md5:	2077d5d6f926087614c9e94021019c0e
-Source1:	http://download.qt.io/official_releases/qt/5.8/%{version}/submodules/qttranslations-opensource-src-%{version}.tar.xz
-# Source1-md5:	b6c6748a923b9639c7d018cfdb04caf4
+Source0:	http://download.qt.io/official_releases/qt/5.11/%{version}/submodules/%{orgname}-everywhere-src-%{version}.tar.xz
+# Source0-md5:	6fa1c97270382cbe2c26b820358ff28b
+Source1:	http://download.qt.io/official_releases/qt/5.11/%{version}/submodules/qttranslations-everywhere-src-%{version}.tar.xz
+# Source1-md5:	67c0dbd61c2b92552b5339d82a94b1a8
 URL:		http://www.qt.io/
 BuildRequires:	GConf2-devel >= 2.0
 BuildRequires:	Qt5Concurrent-devel >= %{qtbase_ver}
@@ -70,8 +70,8 @@ Summary:	The Qt5 Location library
 Summary(pl.UTF-8):	Biblioteka Qt5 Location
 Group:		Libraries
 Requires:	Qt5Core >= %{qtbase_ver}
-Requires:	Qt5Positioning = %{version}-%{release}
 Requires:	Qt5Gui >= %{qtbase_ver}
+Requires:	Qt5Positioning = %{version}-%{release}
 Requires:	Qt5Quick >= %{qtdeclarative_ver}
 Obsoletes:	qt5-qtlocation
 
@@ -178,7 +178,7 @@ Qt5 Location and Positioning examples.
 Przykłady do bibliotek Qt5 Location i Positioning.
 
 %prep
-%setup -q -n %{orgname}-opensource-src-%{version} %{?with_qm:-a1}
+%setup -q -n %{orgname}-everywhere-src-%{version} %{?with_qm:-a1}
 
 %build
 qmake-qt5
@@ -186,7 +186,7 @@ qmake-qt5
 %{?with_doc:%{__make} docs}
 
 %if %{with qm}
-cd qttranslations-opensource-src-%{version}
+cd qttranslations-everywhere-src-%{version}
 qmake-qt5
 %{__make}
 cd ..
@@ -203,10 +203,10 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %if %{with qm}
-%{__make} -C qttranslations-opensource-src-%{version} install \
+%{__make} -C qttranslations-everywhere-src-%{version} install \
 	INSTALL_ROOT=$RPM_BUILD_ROOT
 # keep only qtlocation
-%{__rm} $RPM_BUILD_ROOT%{_datadir}/qt5/translations/{assistant,designer,linguist,qmlviewer,qt,qtbase,qtconfig,qtconnectivity,qtdeclarative,qtmultimedia,qtquick1,qtquickcontrols,qtscript,qtwebsockets,qtxmlpatterns}_*.qm
+%{__rm} $RPM_BUILD_ROOT%{_datadir}/qt5/translations/{assistant,designer,linguist,qmlviewer,qt,qtbase,qtconnectivity,qtdeclarative,qtmultimedia,qtquick1,qtquickcontrols,qtquickcontrols2,qtserialport,qtscript,qtwebengine,qtwebsockets,qtxmlpatterns}_*.qm
 %endif
 
 # kill unnecessary -L%{_libdir} from *.la, *.prl, *.pc
@@ -215,7 +215,7 @@ rm -rf $RPM_BUILD_ROOT
 	$RPM_BUILD_ROOT%{_pkgconfigdir}/*.pc
 
 # useless symlinks
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/libQt5*.so.5.?
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libQt5*.so.5.??
 # actually drop *.la, follow policy of not packaging them when *.pc exist
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/libQt5*.la
 
@@ -274,13 +274,19 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %ghost %{_libdir}/libQt5Location.so.5
 %dir %{qt5dir}/plugins/geoservices
 %attr(755,root,root) %{qt5dir}/plugins/geoservices/libqtgeoservices_esri.so
+%attr(755,root,root) %{qt5dir}/plugins/geoservices/libqtgeoservices_itemsoverlay.so
 %attr(755,root,root) %{qt5dir}/plugins/geoservices/libqtgeoservices_mapbox.so
+%attr(755,root,root) %{qt5dir}/plugins/geoservices/libqtgeoservices_mapboxgl.so
 %attr(755,root,root) %{qt5dir}/plugins/geoservices/libqtgeoservices_nokia.so
 %attr(755,root,root) %{qt5dir}/plugins/geoservices/libqtgeoservices_osm.so
 %dir %{qt5dir}/qml/QtLocation
 %attr(755,root,root) %{qt5dir}/qml/QtLocation/libdeclarative_location.so
 %{qt5dir}/qml/QtLocation/plugins.qmltypes
 %{qt5dir}/qml/QtLocation/qmldir
+%dir  %{_libdir}/qt5/qml/Qt/labs/location
+%attr(755,root,root) %{_libdir}/qt5/qml/Qt/labs/location/liblocationlabsplugin.so
+%{_libdir}/qt5/qml/Qt/labs/location/plugins.qmltypes
+%{_libdir}/qt5/qml/Qt/labs/location/qmldir
 
 %files -n Qt5Location-devel
 %defattr(644,root,root,755)
@@ -296,6 +302,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libQt5Positioning.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libQt5Positioning.so.5
+%attr(755,root,root) %{_libdir}/libQt5PositioningQuick.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libQt5PositioningQuick.so.5
 %dir %{qt5dir}/plugins/position
 %attr(755,root,root) %{qt5dir}/plugins/position/libqtposition_geoclue.so
 %attr(755,root,root) %{qt5dir}/plugins/position/libqtposition_gypsy.so
@@ -308,12 +316,19 @@ rm -rf $RPM_BUILD_ROOT
 %files -n Qt5Positioning-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libQt5Positioning.so
+%attr(755,root,root) %{_libdir}/libQt5PositioningQuick.so
 %{_libdir}/libQt5Positioning.prl
+%{_libdir}/libQt5PositioningQuick.prl
 %{_includedir}/qt5/QtPositioning
+%{_includedir}/qt5/QtPositioningQuick
 %{_pkgconfigdir}/Qt5Positioning.pc
+%{_pkgconfigdir}/Qt5PositioningQuick.pc
 %{_libdir}/cmake/Qt5Positioning
+%{_libdir}/cmake/Qt5PositioningQuick
 %{qt5dir}/mkspecs/modules/qt_lib_positioning.pri
 %{qt5dir}/mkspecs/modules/qt_lib_positioning_private.pri
+%{qt5dir}/mkspecs/modules/qt_lib_positioningquick.pri
+%{qt5dir}/mkspecs/modules/qt_lib_positioningquick_private.pri
 
 %if %{with doc}
 %files doc
