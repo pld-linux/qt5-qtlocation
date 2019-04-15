@@ -20,7 +20,7 @@ Summary:	The Qt5 Location library
 Summary(pl.UTF-8):	Biblioteka Qt5 Location
 Name:		qt5-%{orgname}
 Version:	5.12.2
-Release:	1
+Release:	2
 License:	LGPL v2.1 with Digia Qt LGPL Exception v1.1 or GPL v3.0
 Group:		Libraries
 Source0:	http://download.qt.io/official_releases/qt/5.12/%{version}/submodules/%{orgname}-everywhere-src-%{version}.tar.xz
@@ -31,9 +31,13 @@ URL:		http://www.qt.io/
 BuildRequires:	GConf2-devel >= 2.0
 BuildRequires:	Qt5Concurrent-devel >= %{qtbase_ver}
 BuildRequires:	Qt5Core-devel >= %{qtbase_ver}
+BuildRequires:	Qt5DBus-devel >= %{qtbase_ver}
+BuildRequires:	Qt5Gui-devel >= %{qtbase_ver}
 BuildRequires:	Qt5Network-devel >= %{qtbase_ver}
 BuildRequires:	Qt5Qml-devel >= %{qtdeclarative_ver}
 BuildRequires:	Qt5Quick-devel >= %{qtdeclarative_ver}
+BuildRequires:	Qt5SerialPort-devel >= %{qtdeclarative_ver}
+BuildRequires:	Qt5Sql-devel >= %{qtdeclarative_ver}
 BuildRequires:	gypsy-devel
 BuildRequires:	pkgconfig
 %if %{with doc}
@@ -309,6 +313,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{qt5dir}/plugins/position/libqtposition_geoclue2.so
 %attr(755,root,root) %{qt5dir}/plugins/position/libqtposition_gypsy.so
 %attr(755,root,root) %{qt5dir}/plugins/position/libqtposition_positionpoll.so
+%attr(755,root,root) %{qt5dir}/plugins/position/libqtposition_serialnmea.so
 %dir %{qt5dir}/qml/QtPositioning
 %attr(755,root,root) %{qt5dir}/qml/QtPositioning/libdeclarative_positioning.so
 %{qt5dir}/qml/QtPositioning/plugins.qmltypes
