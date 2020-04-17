@@ -19,14 +19,14 @@
 Summary:	The Qt5 Location library
 Summary(pl.UTF-8):	Biblioteka Qt5 Location
 Name:		qt5-%{orgname}
-Version:	5.14.1
+Version:	5.14.2
 Release:	1
 License:	LGPL v2.1 with Digia Qt LGPL Exception v1.1 or GPL v3.0
 Group:		Libraries
 Source0:	http://download.qt.io/official_releases/qt/5.14/%{version}/submodules/%{orgname}-everywhere-src-%{version}.tar.xz
-# Source0-md5:	ee5133827e0df9b87f40def5c4965d72
+# Source0-md5:	5510eff2b92c7c514edfebc042d404c1
 Source1:	http://download.qt.io/official_releases/qt/5.14/%{version}/submodules/qttranslations-everywhere-src-%{version}.tar.xz
-# Source1-md5:	ef18bbad424173c3211c2ce0f4074485
+# Source1-md5:	bcf8b00e49f4fe4271ff4651bf32aca8
 URL:		http://www.qt.io/
 BuildRequires:	GConf2-devel >= 2.0
 BuildRequires:	Qt5Concurrent-devel >= %{qtbase_ver}
