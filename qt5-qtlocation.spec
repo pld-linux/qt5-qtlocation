@@ -4,8 +4,8 @@
 # Conditional build:
 %bcond_with	bootstrap	# disable features to able to build without installed qt5
 # -- build targets
-%bcond_without	doc	# Documentation
-%bcond_without	qm	# QM translations
+%bcond_without	doc		# Documentation
+%bcond_without	qm		# QM translations
 
 %if %{with bootstrap}
 %undefine	with_doc
@@ -14,20 +14,21 @@
 
 %define		qtbase_ver		%{version}
 %define		qtdeclarative_ver	%{version}
-%define		qttools_ver		5.8
+%define		qtserialport_ver	%{version}
+%define		qttools_ver		5.9
 %define		orgname		qtlocation
 Summary:	The Qt5 Location library
 Summary(pl.UTF-8):	Biblioteka Qt5 Location
 Name:		qt5-%{orgname}
 Version:	5.15.2
 Release:	2
-License:	LGPL v2.1 with Digia Qt LGPL Exception v1.1 or GPL v3.0
+License:	LGPL v3 or GPL v2+ or commercial
 Group:		Libraries
 Source0:	http://download.qt.io/official_releases/qt/5.15/%{version}/submodules/%{orgname}-everywhere-src-%{version}.tar.xz
 # Source0-md5:	5f1a8380518e949ba5949a0fcbaa191a
 Source1:	http://download.qt.io/official_releases/qt/5.15/%{version}/submodules/qttranslations-everywhere-src-%{version}.tar.xz
 # Source1-md5:	9b66cdb64402e8fd9e843f8a7120abb1
-URL:		http://www.qt.io/
+URL:		https://www.qt.io/
 BuildRequires:	GConf2-devel >= 2.0
 BuildRequires:	Qt5Concurrent-devel >= %{qtbase_ver}
 BuildRequires:	Qt5Core-devel >= %{qtbase_ver}
@@ -36,7 +37,7 @@ BuildRequires:	Qt5Gui-devel >= %{qtbase_ver}
 BuildRequires:	Qt5Network-devel >= %{qtbase_ver}
 BuildRequires:	Qt5Qml-devel >= %{qtdeclarative_ver}
 BuildRequires:	Qt5Quick-devel >= %{qtdeclarative_ver}
-BuildRequires:	Qt5SerialPort-devel >= %{qtdeclarative_ver}
+BuildRequires:	Qt5SerialPort-devel >= %{qtserialport_ver}
 BuildRequires:	Qt5Sql-devel >= %{qtdeclarative_ver}
 BuildRequires:	gypsy-devel
 BuildRequires:	pkgconfig
@@ -46,7 +47,7 @@ BuildRequires:	qt5-assistant >= %{qttools_ver}
 BuildRequires:	qt5-build >= %{qtbase_ver}
 %{?with_qm:BuildRequires:	qt5-linguist >= %{qttools_ver}}
 BuildRequires:	qt5-qmake >= %{qtbase_ver}
-BuildRequires:	rpmbuild(macros) >= 1.654
+BuildRequires:	rpmbuild(macros) >= 1.752
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -94,7 +95,9 @@ Group:		Development/Libraries
 Requires:	Qt5Core-devel >= %{qtbase_ver}
 Requires:	Qt5Gui-devel >= %{qtbase_ver}
 Requires:	Qt5Location = %{version}-%{release}
+Requires:	Qt5Network-devel >= %{qtbase_ver}
 Requires:	Qt5Positioning-devel = %{version}-%{release}
+Requires:	Qt5Qml-devel >= %{qtdeclarative_ver}
 Requires:	Qt5Quick-devel >= %{qtdeclarative_ver}
 Obsoletes:	qt5-qtlocation-devel
 
@@ -109,10 +112,12 @@ Summary:	The Qt5 Positioning library
 Summary(pl.UTF-8):	Biblioteka Qt5 Positioning
 Group:		Libraries
 Requires:	Qt5Core >= %{qtbase_ver}
-# for plugins
 Requires:	Qt5Network >= %{qtbase_ver}
 Requires:	Qt5Qml >= %{qtdeclarative_ver}
 Requires:	Qt5Quick >= %{qtdeclarative_ver}
+# for plugins
+Requires:	Qt5DBus >= %{qtbase_ver}
+Requires:	Qt5SerialPort >= %{qtserialport_ver}
 Obsoletes:	qt5-qtlocation
 
 %description -n Qt5Positioning
@@ -128,7 +133,10 @@ Summary:	Qt5 Positioning library - development files
 Summary(pl.UTF-8):	Biblioteka Qt5 Positioning - pliki programistyczne
 Group:		Development/Libraries
 Requires:	Qt5Core-devel >= %{qtbase_ver}
+Requires:	Qt5Network-devel >= %{qtbase_ver}
 Requires:	Qt5Positioning = %{version}-%{release}
+Requires:	Qt5Qml-devel >= %{qtbase_ver}
+Requires:	Qt5Quick-devel >= %{qtbase_ver}
 Obsoletes:	qt5-qtlocation-devel
 
 %description -n Qt5Positioning-devel
@@ -142,9 +150,7 @@ Summary:	Qt5 Location and Positioning documentation in HTML format
 Summary(pl.UTF-8):	Dokumentacja do bibliotek Qt5 Location i Positioning w formacie HTML
 Group:		Documentation
 Requires:	qt5-doc-common >= %{qtbase_ver}
-%if "%{_rpmversion}" >= "5"
-BuildArch:	noarch
-%endif
+%{?noarchpackage}
 
 %description doc
 Qt5 Location and Positioning documentation in HTML format.
@@ -157,9 +163,7 @@ Summary:	Qt5 Location and Positioning documentation in QCH format
 Summary(pl.UTF-8):	Dokumentacja do bibliotek Qt5 Location i Positioning w formacie QCH
 Group:		Documentation
 Requires:	qt5-doc-common >= %{qtbase_ver}
-%if "%{_rpmversion}" >= "5"
-BuildArch:	noarch
-%endif
+%{?noarchpackage}
 
 %description doc-qch
 Qt5 Location and Positioning documentation in QCH format.
@@ -171,9 +175,7 @@ Dokumentacja do bibliotek Qt5 Location i Positioning w formacie QCH.
 Summary:	Qt5 Location and Positioning examples
 Summary(pl.UTF-8):	Przykłady do bibliotek Qt5 Location i Positioning
 Group:		X11/Development/Libraries
-%if "%{_rpmversion}" >= "5"
-BuildArch:	noarch
-%endif
+%{?noarchpackage}
 
 %description examples
 Qt5 Location and Positioning examples.
@@ -198,6 +200,7 @@ cd ..
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
 %{__make} install \
 	INSTALL_ROOT=$RPM_BUILD_ROOT
 
@@ -274,20 +277,29 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n Qt5Location -f qtlocation.lang
 %defattr(644,root,root,755)
+# R: Core Gui Qml QmlModels Positioning PositioningQuick Quick
 %attr(755,root,root) %{_libdir}/libQt5Location.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libQt5Location.so.5
 %dir %{qt5dir}/plugins/geoservices
+# R: Core Location Network Positioning
 %attr(755,root,root) %{qt5dir}/plugins/geoservices/libqtgeoservices_esri.so
+# R: Core Location Positioning Quick
 %attr(755,root,root) %{qt5dir}/plugins/geoservices/libqtgeoservices_itemsoverlay.so
+# R: Core Location Network Positioning
 %attr(755,root,root) %{qt5dir}/plugins/geoservices/libqtgeoservices_mapbox.so
+# R: Core Gui Location Network Positioning Qml Quick Sql
 %attr(755,root,root) %{qt5dir}/plugins/geoservices/libqtgeoservices_mapboxgl.so
+# R: Core Gui Location Network Positioning
 %attr(755,root,root) %{qt5dir}/plugins/geoservices/libqtgeoservices_nokia.so
+# R: Core Gui Location Network Positioning
 %attr(755,root,root) %{qt5dir}/plugins/geoservices/libqtgeoservices_osm.so
 %dir %{qt5dir}/qml/QtLocation
+# R: Core Location Positioning Qml Quick
 %attr(755,root,root) %{qt5dir}/qml/QtLocation/libdeclarative_location.so
 %{qt5dir}/qml/QtLocation/plugins.qmltypes
 %{qt5dir}/qml/QtLocation/qmldir
 %dir  %{_libdir}/qt5/qml/Qt/labs/location
+# R: Core Location Positioning Qml
 %attr(755,root,root) %{_libdir}/qt5/qml/Qt/labs/location/liblocationlabsplugin.so
 %{_libdir}/qt5/qml/Qt/labs/location/plugins.qmltypes
 %{_libdir}/qt5/qml/Qt/labs/location/qmldir
@@ -304,17 +316,25 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n Qt5Positioning
 %defattr(644,root,root,755)
+# R: Core
 %attr(755,root,root) %{_libdir}/libQt5Positioning.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libQt5Positioning.so.5
+# R: Core Network Qml Quick
 %attr(755,root,root) %{_libdir}/libQt5PositioningQuick.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libQt5PositioningQuick.so.5
 %dir %{qt5dir}/plugins/position
+# R: Core DBus Positioning
 %attr(755,root,root) %{qt5dir}/plugins/position/libqtposition_geoclue.so
+# R: Core DBus Positioning
 %attr(755,root,root) %{qt5dir}/plugins/position/libqtposition_geoclue2.so
+# R: Core Positioning, GConf2, gypsy
 %attr(755,root,root) %{qt5dir}/plugins/position/libqtposition_gypsy.so
+# R: Core Positioning
 %attr(755,root,root) %{qt5dir}/plugins/position/libqtposition_positionpoll.so
+# R: Core Positioning SerialPort
 %attr(755,root,root) %{qt5dir}/plugins/position/libqtposition_serialnmea.so
 %dir %{qt5dir}/qml/QtPositioning
+# R: Core Positioning PositioningQuick Qml Quick
 %attr(755,root,root) %{qt5dir}/qml/QtPositioning/libdeclarative_positioning.so
 %{qt5dir}/qml/QtPositioning/plugins.qmltypes
 %{qt5dir}/qml/QtPositioning/qmldir
