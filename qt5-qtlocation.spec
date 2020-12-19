@@ -78,7 +78,7 @@ Requires:	Qt5Core >= %{qtbase_ver}
 Requires:	Qt5Gui >= %{qtbase_ver}
 Requires:	Qt5Positioning = %{version}-%{release}
 Requires:	Qt5Quick >= %{qtdeclarative_ver}
-Obsoletes:	qt5-qtlocation
+Obsoletes:	qt5-qtlocation < 5.3.0
 
 %description -n Qt5Location
 Qt5 Location library provides mapping, navigation and place search via
@@ -99,7 +99,7 @@ Requires:	Qt5Network-devel >= %{qtbase_ver}
 Requires:	Qt5Positioning-devel = %{version}-%{release}
 Requires:	Qt5Qml-devel >= %{qtdeclarative_ver}
 Requires:	Qt5Quick-devel >= %{qtdeclarative_ver}
-Obsoletes:	qt5-qtlocation-devel
+Obsoletes:	qt5-qtlocation-devel < 5.3.0
 
 %description -n Qt5Location-devel
 Qt5 Location library - development files.
@@ -118,7 +118,7 @@ Requires:	Qt5Quick >= %{qtdeclarative_ver}
 # for plugins
 Requires:	Qt5DBus >= %{qtbase_ver}
 Requires:	Qt5SerialPort >= %{qtserialport_ver}
-Obsoletes:	qt5-qtlocation
+Obsoletes:	qt5-qtlocation < 5.3.0
 
 %description -n Qt5Positioning
 Qt5 Positioning library provides positioning information via QML and
@@ -137,7 +137,7 @@ Requires:	Qt5Network-devel >= %{qtbase_ver}
 Requires:	Qt5Positioning = %{version}-%{release}
 Requires:	Qt5Qml-devel >= %{qtbase_ver}
 Requires:	Qt5Quick-devel >= %{qtbase_ver}
-Obsoletes:	qt5-qtlocation-devel
+Obsoletes:	qt5-qtlocation-devel < 5.3.0
 
 %description -n Qt5Positioning-devel
 Qt5 Positioning library - development files.
