@@ -24,9 +24,9 @@ Version:	5.15.2
 Release:	2
 License:	LGPL v3 or GPL v2+ or commercial
 Group:		Libraries
-Source0:	http://download.qt.io/official_releases/qt/5.15/%{version}/submodules/%{orgname}-everywhere-src-%{version}.tar.xz
+Source0:	https://download.qt.io/official_releases/qt/5.15/%{version}/submodules/%{orgname}-everywhere-src-%{version}.tar.xz
 # Source0-md5:	5f1a8380518e949ba5949a0fcbaa191a
-Source1:	http://download.qt.io/official_releases/qt/5.15/%{version}/submodules/qttranslations-everywhere-src-%{version}.tar.xz
+Source1:	https://download.qt.io/official_releases/qt/5.15/%{version}/submodules/qttranslations-everywhere-src-%{version}.tar.xz
 # Source1-md5:	9b66cdb64402e8fd9e843f8a7120abb1
 URL:		https://www.qt.io/
 BuildRequires:	GConf2-devel >= 2.0
@@ -47,6 +47,7 @@ BuildRequires:	qt5-assistant >= %{qttools_ver}
 BuildRequires:	qt5-build >= %{qtbase_ver}
 %{?with_qm:BuildRequires:	qt5-linguist >= %{qttools_ver}}
 BuildRequires:	qt5-qmake >= %{qtbase_ver}
+BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 1.752
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
@@ -135,8 +136,8 @@ Group:		Development/Libraries
 Requires:	Qt5Core-devel >= %{qtbase_ver}
 Requires:	Qt5Network-devel >= %{qtbase_ver}
 Requires:	Qt5Positioning = %{version}-%{release}
-Requires:	Qt5Qml-devel >= %{qtbase_ver}
-Requires:	Qt5Quick-devel >= %{qtbase_ver}
+Requires:	Qt5Qml-devel >= %{qtdeclarative_ver}
+Requires:	Qt5Quick-devel >= %{qtdeclarative_ver}
 Obsoletes:	qt5-qtlocation-devel < 5.3.0
 
 %description -n Qt5Positioning-devel
