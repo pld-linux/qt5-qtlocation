@@ -6,6 +6,7 @@
 # -- build targets
 %bcond_without	doc		# Documentation
 %bcond_without	qm		# QM translations
+%bcond_without	gypsy		# gypsy plugin
 
 %if %{with bootstrap}
 %undefine	with_doc
@@ -29,7 +30,7 @@ Source0:	https://download.qt.io/official_releases/qt/5.15/%{version}/submodules/
 Source1:	https://download.qt.io/official_releases/qt/5.15/%{version}/submodules/qttranslations-everywhere-src-%{version}.tar.xz
 # Source1-md5:	9b66cdb64402e8fd9e843f8a7120abb1
 URL:		https://www.qt.io/
-BuildRequires:	GConf2-devel >= 2.0
+%{?with_gypsy:BuildRequires:	GConf2-devel >= 2.0}
 BuildRequires:	Qt5Concurrent-devel >= %{qtbase_ver}
 BuildRequires:	Qt5Core-devel >= %{qtbase_ver}
 BuildRequires:	Qt5DBus-devel >= %{qtbase_ver}
@@ -39,7 +40,7 @@ BuildRequires:	Qt5Qml-devel >= %{qtdeclarative_ver}
 BuildRequires:	Qt5Quick-devel >= %{qtdeclarative_ver}
 BuildRequires:	Qt5SerialPort-devel >= %{qtserialport_ver}
 BuildRequires:	Qt5Sql-devel >= %{qtdeclarative_ver}
-BuildRequires:	gypsy-devel
+%{?with_gypsy:BuildRequires:	gypsy-devel}
 BuildRequires:	pkgconfig
 %if %{with doc}
 BuildRequires:	qt5-assistant >= %{qttools_ver}
@@ -188,7 +189,8 @@ Przykłady do bibliotek Qt5 Location i Positioning.
 %setup -q -n %{orgname}-everywhere-src-%{version} %{?with_qm:-a1}
 
 %build
-qmake-qt5
+qmake-qt5 -- \
+	%{!?with_gypsy:-no}-feature-gypsy
 %{__make}
 %{?with_doc:%{__make} docs}
 
@@ -329,7 +331,7 @@ rm -rf $RPM_BUILD_ROOT
 # R: Core DBus Positioning
 %attr(755,root,root) %{qt5dir}/plugins/position/libqtposition_geoclue2.so
 # R: Core Positioning, GConf2, gypsy
-%attr(755,root,root) %{qt5dir}/plugins/position/libqtposition_gypsy.so
+%{?with_gypsy:%attr(755,root,root) %{qt5dir}/plugins/position/libqtposition_gypsy.so}
 # R: Core Positioning
 %attr(755,root,root) %{qt5dir}/plugins/position/libqtposition_positionpoll.so
 # R: Core Positioning SerialPort
