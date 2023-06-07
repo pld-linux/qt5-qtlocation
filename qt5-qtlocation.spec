@@ -21,14 +21,15 @@
 Summary:	The Qt5 Location library
 Summary(pl.UTF-8):	Biblioteka Qt5 Location
 Name:		qt5-%{orgname}
-Version:	5.15.9
+Version:	5.15.10
 Release:	1
 License:	LGPL v3 or GPL v2+ or commercial
 Group:		Libraries
 Source0:	https://download.qt.io/official_releases/qt/5.15/%{version}/submodules/%{orgname}-everywhere-opensource-src-%{version}.tar.xz
-# Source0-md5:	ea114a64e604f731535517e66ea6f548
+# Source0-md5:	6d7c0a23fe701597815a54cac53c1e62
 Source1:	https://download.qt.io/official_releases/qt/5.15/%{version}/submodules/qttranslations-everywhere-opensource-src-%{version}.tar.xz
-# Source1-md5:	af998d4bc7ab3484c392520c12d5f3a3
+# Source1-md5:	f421a46bfd3cbbdf0a3fa701d3ccbedf
+Patch0:		gcc13.patch
 URL:		https://www.qt.io/
 %{?with_gypsy:BuildRequires:	GConf2-devel >= 2.0}
 BuildRequires:	Qt5Concurrent-devel >= %{qtbase_ver}
@@ -187,6 +188,7 @@ Przykłady do bibliotek Qt5 Location i Positioning.
 
 %prep
 %setup -q -n %{orgname}-everywhere-src-%{version} %{?with_qm:-a1}
+%patch0 -p1
 
 %build
 %{qmake_qt5} -- \
@@ -301,6 +303,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{qt5dir}/qml/QtLocation/libdeclarative_location.so
 %{qt5dir}/qml/QtLocation/plugins.qmltypes
 %{qt5dir}/qml/QtLocation/qmldir
+%dir  %{_libdir}/qt5/qml/Qt/labs/location
+# R: Core Location Positioning Qml
+%attr(755,root,root) %{_libdir}/qt5/qml/Qt/labs/location/liblocationlabsplugin.so
+%{_libdir}/qt5/qml/Qt/labs/location/plugins.qmltypes
+%{_libdir}/qt5/qml/Qt/labs/location/qmldir
 
 %files -n Qt5Location-devel
 %defattr(644,root,root,755)
