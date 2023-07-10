@@ -77,7 +77,7 @@ Ten pakiet zawiera biblioteki Qt5 Location i Positioning.
 Summary:	The Qt5 Location library
 Summary(pl.UTF-8):	Biblioteka Qt5 Location
 Group:		Libraries
-Requires:	Qt5Core >= %{qtbase_ver}
+%requires_eq_to	Qt5Core Qt5Core-devel
 Requires:	Qt5Gui >= %{qtbase_ver}
 Requires:	Qt5Positioning = %{version}-%{release}
 Requires:	Qt5Quick >= %{qtdeclarative_ver}
@@ -114,7 +114,7 @@ Biblioteka Qt5 Location - pliki programistyczne.
 Summary:	The Qt5 Positioning library
 Summary(pl.UTF-8):	Biblioteka Qt5 Positioning
 Group:		Libraries
-Requires:	Qt5Core >= %{qtbase_ver}
+%requires_eq_to	Qt5Core Qt5Core-devel
 Requires:	Qt5Network >= %{qtbase_ver}
 Requires:	Qt5Qml >= %{qtdeclarative_ver}
 Requires:	Qt5Quick >= %{qtdeclarative_ver}
