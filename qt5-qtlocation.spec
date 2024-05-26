@@ -30,6 +30,7 @@ Source0:	https://download.qt.io/official_releases/qt/5.15/%{version}/submodules/
 Source1:	https://download.qt.io/official_releases/qt/5.15/%{version}/submodules/qttranslations-everywhere-opensource-src-%{version}.tar.xz
 # Source1-md5:	a7fe34c317fbba74a9f97c36679fec47
 Patch0:		gcc13.patch
+Patch1:		system-rapidjson.patch
 URL:		https://www.qt.io/
 %{?with_gypsy:BuildRequires:	GConf2-devel >= 2.0}
 BuildRequires:	Qt5Concurrent-devel >= %{qtbase_ver}
@@ -49,6 +50,7 @@ BuildRequires:	qt5-assistant >= %{qttools_ver}
 BuildRequires:	qt5-build >= %{qtbase_ver}
 %{?with_qm:BuildRequires:	qt5-linguist >= %{qttools_ver}}
 BuildRequires:	qt5-qmake >= %{qtbase_ver}
+BuildRequires:	rapidjson-devel >= 1.1.0
 BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 2.016
 BuildRequires:	tar >= 1:1.22
@@ -189,6 +191,7 @@ Przykłady do bibliotek Qt5 Location i Positioning.
 %prep
 %setup -q -n %{orgname}-everywhere-src-%{version} %{?with_qm:-a1}
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{qmake_qt5} -- \

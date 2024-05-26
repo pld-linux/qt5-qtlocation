@@ -1,0 +1,11 @@
+--- qtlocation-everywhere-src-5.15.14/src/3rdparty/mapbox-gl-native/mapbox-gl-native.pro.orig	2024-05-08 07:14:45.000000000 +0200
++++ qtlocation-everywhere-src-5.15.14/src/3rdparty/mapbox-gl-native/mapbox-gl-native.pro	2024-05-25 11:38:27.727264462 +0200
+@@ -424,8 +424,6 @@
+     deps/polylabel/1.0.3/include \
+     deps/protozero/1.5.2 \
+     deps/protozero/1.5.2/include \
+-    deps/rapidjson/1.1.0 \
+-    deps/rapidjson/1.1.0/include \
+     deps/shelf-pack/2.1.1 \
+     deps/shelf-pack/2.1.1/include \
+     deps/supercluster/0.2.2 \
