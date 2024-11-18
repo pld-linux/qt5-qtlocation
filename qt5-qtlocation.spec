@@ -21,14 +21,14 @@
 Summary:	The Qt5 Location library
 Summary(pl.UTF-8):	Biblioteka Qt5 Location
 Name:		qt5-%{orgname}
-Version:	5.15.15
+Version:	5.15.16
 Release:	1
 License:	LGPL v3 or GPL v2+ or commercial
 Group:		Libraries
 Source0:	https://download.qt.io/official_releases/qt/5.15/%{version}/submodules/%{orgname}-everywhere-opensource-src-%{version}.tar.xz
-# Source0-md5:	f47b25697358b9b014cb1c4019067e9e
+# Source0-md5:	c76ae64549ad836f16e1edd4df8a4a41
 Source1:	https://download.qt.io/official_releases/qt/5.15/%{version}/submodules/qttranslations-everywhere-opensource-src-%{version}.tar.xz
-# Source1-md5:	bb7689f5db3fc1352180f385e2df677b
+# Source1-md5:	2f9320ff53b3cb51482cd45eec25a470
 Patch0:		gcc13.patch
 Patch1:		system-rapidjson.patch
 URL:		https://www.qt.io/
